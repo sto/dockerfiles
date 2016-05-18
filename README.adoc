@@ -1,0 +1,3 @@
+= STO's Dockerfiles
+
+Collection of Dockerfiles for testing purposes
