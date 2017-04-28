@@ -5,8 +5,8 @@ FROM ruby:2.4
 # Right now (2017/02/12) I'm using jekyll with liquid 4.0 (whitespace control,
 # finally) but the support is missing from the latest released version of
 # jekyll (3.4.0), although it has been merged into the project's master
-# branch; to be able to use it, the build tries to install a jekyll version >
-# 3.4.0 or it installs that same version from git using the commit that merged
+# branch; to be able to use it, the build tries to install a jekyll version >=
+# 3.5.0 or it installs that same version from git using the commit that merged
 # the liquid 4.0.0 support.
 #
 # Build
@@ -47,8 +47,8 @@ RUN apt-get update \
                      python-docutils \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-# Install jekyll > 3.4.0 or use GIT
-RUN gem install jekyll --version '> 3.4.0' || ( \
+# Install jekyll >= 3.5.0 or use GIT
+RUN gem install jekyll --version '>= 3.5.0' || ( \
       cd /tmp && \
 	  git clone http://github.com/jekyll/jekyll.git && \
       cd jekyll && \
@@ -61,6 +61,8 @@ RUN gem install jekyll --version '> 3.4.0' || ( \
 # Default jekyll components (taken from https://github.com/jekyll/docker)
 RUN gem install pygments.rb \
                 jekyll-sitemap \
+				jekyll-archives \
+				jekyll-paginate-v2 \
                 jekyll-mentions \
                 jekyll-coffeescript \
                 jekyll-sass-converter \
