@@ -43,6 +43,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
                      git \
                      node \
+                     sudo \
                      python-pygments \
                      python-docutils \
   && apt-get clean \
@@ -79,6 +80,10 @@ RUN gem install html-proofer \
 RUN gem install jekyll-archives \
                 jekyll-paginate-v2 \
                 jekyll-postfiles \
+                # For our theme
+                autoprefixer-rails \
+                bootstrap-sass \
+                sass \
                 # Syntax Highlighters
                 pygments.rb \
                 rouge
