@@ -2,13 +2,6 @@ FROM ruby:2.4
 #
 # Docker to process jekyll and asciidoctor documents
 #
-# Right now (2017/02/12) I'm using jekyll with liquid 4.0 (whitespace control,
-# finally) but the support is missing from the latest released version of
-# jekyll (3.4.x), although it has been merged into the project's master
-# branch; to be able to use it, the build tries to install a jekyll version >=
-# 3.5.0 or it installs the git HEAD version Jekyll that has already merged the
-# the liquid 4.0.0 support.
-#
 # Build
 # -----
 # $ docker build -t jekyll-adoc .
@@ -48,16 +41,9 @@ RUN apt-get update \
                      python-docutils \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-# Install jekyll >= 3.5.0 or use GIT HEAD
-RUN gem install jekyll --version '>= 3.5.0' || ( \
-      cd /tmp && \
-      git clone http://github.com/jekyll/jekyll.git && \
-      cd jekyll && \
-      gem build jekyll.gemspec && \
-      gem install jekyll-3.4.*.gem && \
-      cd .. && \
-      rm -rf jekyll \
-    )
+# Install jekyll >= 3.5.0 (we want liquid >= 4.0)
+RUN gem install jekyll --version '>= 3.5.0'
+
 # Default jekyll components (list taken from
 # https://github.com/jekyll/docker/blob/master/opts.yml)
 RUN gem install html-proofer \
