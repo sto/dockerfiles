@@ -61,7 +61,8 @@ RUN gem install html-proofer \
                 jemoji \
                 minima \
                 github-pages \
-                jekyll-github-metadata
+                jekyll-github-metadata \
+                rb-inotify
 # Extra jekyll packages used by us
 RUN gem install jekyll-archives \
                 jekyll-paginate-v2 \
