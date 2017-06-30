@@ -61,8 +61,7 @@ RUN gem install html-proofer \
                 jemoji \
                 minima \
                 github-pages \
-                jekyll-github-metadata \
-                rb-inotify
+                jekyll-github-metadata
 # Extra jekyll packages used by us
 RUN gem install jekyll-archives \
                 jekyll-paginate-v2 \
@@ -85,6 +84,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends \
                      graphviz \
                      fonts-liberation \
+                     linkchecker \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Add diagram support to jekyll and asciidoctor
