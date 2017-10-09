@@ -90,6 +90,21 @@ RUN apt-get update \
 # Add diagram support to jekyll and asciidoctor
 RUN gem install asciidoctor-diagram \
                 jekyll-plantuml
+# Add python-blogdiag (there are packages @ sid, but we install it from pip
+# for now)
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+                     python-pip \
+                     python-dev \
+                     python-setuptools \
+  && pip install blockdiag \
+  && apt-get purge -y \
+                      python-pip \
+                      python-dev \
+                      python-setuptools \
+  && apt-get autoremove -y --purge \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 # Install gems from pre
 RUN gem install asciidoctor-epub3 \
                 asciidoctor-pdf \
