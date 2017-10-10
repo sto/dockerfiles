@@ -1,4 +1,4 @@
-FROM ruby:2.4
+FROM ruby:stretch
 #
 # Docker to process jekyll and asciidoctor documents
 #
@@ -19,10 +19,10 @@ FROM ruby:2.4
 MAINTAINER Sergio Talens-Oliag <sto@iti.es>
 # update distribution and packages -- use httpredir mirror
 RUN echo '# See /etc/apt/sources.list.d/' > /etc/apt/sources.list \
-  && echo 'deb http://httpredir.debian.org/debian jessie main' \
-     > /etc/apt/sources.list.d/debian-jessie.list \
-  && echo 'deb http://security.debian.org/ jessie/updates main' \
-     >> /etc/apt/sources.list.d/debian-jessie.list \
+  && echo 'deb http://httpredir.debian.org/debian stretch main' \
+     > /etc/apt/sources.list.d/debian-stretch.list \
+  && echo 'deb http://security.debian.org/ stretch/updates main' \
+     >> /etc/apt/sources.list.d/debian-stretch.list \
   && apt-get update \
   && apt-get dist-upgrade -y --no-install-recommends \
   && apt-get install -y aptitude \
@@ -35,10 +35,9 @@ RUN echo '# See /etc/apt/sources.list.d/' > /etc/apt/sources.list \
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
                      git \
-                     node \
                      sudo \
-                     python-pygments \
                      python-docutils \
+                     python-pygments \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Install jekyll >= 3.5.0 (we want liquid >= 4.0)
@@ -90,19 +89,13 @@ RUN apt-get update \
 # Add diagram support to jekyll and asciidoctor
 RUN gem install asciidoctor-diagram \
                 jekyll-plantuml
-# Add python-blogdiag (there are packages @ sid, but we install it from pip
-# for now)
+# Add blockdiag support ... there is a debian package on sid, but we
+# install using other tools 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends \
-                     python-pip \
-                     python-dev \
-                     python-setuptools \
-  && pip install blockdiag \
-  && apt-get purge -y \
-                      python-pip \
-                      python-dev \
-                      python-setuptools \
-  && apt-get autoremove -y --purge \
+  && apt-get install -y --no-install-recommends  \
+     python-pip python-pip-whl python-setuptools \
+  && pip install --system blockdiag \
+  && apt-get purge -y python-pip python-pip-whl python-setuptools \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Install gems from pre
