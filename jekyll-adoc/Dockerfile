@@ -93,9 +93,10 @@ RUN gem install asciidoctor-diagram \
 # install using other tools 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends  \
-     python-pip python-pip-whl python-setuptools \
+                     python-pip \
+                     python-pip-whl \
+                     python-setuptools \
   && pip install --system blockdiag \
-  && apt-get purge -y python-pip python-pip-whl python-setuptools \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Install gems from pre
