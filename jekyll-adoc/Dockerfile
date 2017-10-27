@@ -109,6 +109,9 @@ RUN cd /tmp \
     && cd jekyll-rst && rake install && rake clobber \
     && cd .. && rm -rf jekyll-rst
 
+# Add reveal.js support for asciidoctor
+RUN gem install asciidoctor-revealjs
+
 WORKDIR /documents
 VOLUME  /documents
 EXPOSE 4000
