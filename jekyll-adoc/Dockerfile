@@ -84,6 +84,8 @@ RUN apt-get update \
                      graphviz \
                      fonts-liberation \
                      linkchecker \
+                     plantuml \
+                     umlet \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Add diagram support to jekyll and asciidoctor
@@ -96,7 +98,12 @@ RUN apt-get update \
                      python-pip \
                      python-pip-whl \
                      python-setuptools \
-  && pip install --system blockdiag \
+                     python-wheel \
+  && pip install --system \
+                 blockdiag \
+                 seqdiag \
+                 actdiag \
+                 nwdiag \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Install gems from pre
