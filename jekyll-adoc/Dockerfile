@@ -85,6 +85,7 @@ RUN apt-get update \
                      fonts-liberation \
                      linkchecker \
                      plantuml \
+                     umlet \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Add diagram support to jekyll and asciidoctor
@@ -97,7 +98,12 @@ RUN apt-get update \
                      python-pip \
                      python-pip-whl \
                      python-setuptools \
-  && pip install --system blockdiag \
+                     python-wheel \
+  && pip install --system \
+                 blockdiag \
+                 seqdiag \
+                 actdiag \
+                 nwdiag \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Install gems from pre
@@ -109,6 +115,9 @@ RUN cd /tmp \
     && git clone https://github.com/sto/jekyll-rst.git \
     && cd jekyll-rst && rake install && rake clobber \
     && cd .. && rm -rf jekyll-rst
+
+# Add reveal.js support for asciidoctor
+RUN gem install asciidoctor-revealjs
 
 WORKDIR /documents
 VOLUME  /documents
