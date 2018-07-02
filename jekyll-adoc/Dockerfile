@@ -84,7 +84,6 @@ RUN apt-get update \
                      graphviz \
                      fonts-liberation \
                      linkchecker \
-                     plantuml \
                      umlet \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
