@@ -4,7 +4,7 @@ FROM ruby:stretch
 #
 # Build
 # -----
-# $ docker build -t jekyll-adoc .
+# $ docker build -t stodh/jekyll-adoc .
 # 
 # RUN
 # ---
@@ -84,6 +84,7 @@ RUN apt-get update \
                      graphviz \
                      fonts-liberation \
                      linkchecker \
+                     plantuml \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Add diagram support to jekyll and asciidoctor
