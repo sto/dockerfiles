@@ -118,6 +118,26 @@ RUN cd /tmp \
 # Add reveal.js support for asciidoctor
 RUN gem install asciidoctor-revealjs
 
+# Add bespoke support for asciidoctor
+RUN gem install asciidoctor-bespoke --pre
+
+# Install active LTS nodejs version for bespoke processing
+RUN NODEREPO="node_8.x" \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends apt-transport-https \
+  && echo "deb https://deb.nodesource.com/${NODEREPO} stretch main" \
+     > /etc/apt/sources.list.d/nodesource.list \
+  && curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key \
+     | apt-key add - \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends \
+                     nodejs \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install gulp
+RUN npm install -g gulp
+
 WORKDIR /documents
 VOLUME  /documents
 EXPOSE 4000
