@@ -76,6 +76,7 @@ RUN gem install jekyll-archives \
 RUN gem install jekyll-admin
 # Asciidoctor
 RUN gem install asciidoctor \
+                asciidoctor-rouge \
                 coderay \
                 jekyll-asciidoc
 # additional packages
