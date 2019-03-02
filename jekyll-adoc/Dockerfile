@@ -68,7 +68,7 @@ RUN gem install jekyll-archives \
                 # For our theme
                 autoprefixer-rails \
                 bootstrap-sass \
-                sass \
+                sassc \
                 # Syntax Highlighters
                 pygments.rb \
                 rouge
@@ -118,6 +118,9 @@ RUN cd /tmp \
 
 # Add reveal.js support for asciidoctor
 RUN gem install asciidoctor-revealjs
+
+# Add concurrent-ruby to the image
+RUN gem install concurrent-ruby
 
 # Add bespoke support for asciidoctor
 RUN gem install asciidoctor-bespoke --pre
