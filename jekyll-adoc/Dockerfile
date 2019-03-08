@@ -16,22 +16,14 @@ FROM ruby:stretch
 #              -v "/etc/passwd:/etc/passwd:ro"         \
 #              -v "/etc/shadow:/etc/shadow:ro"         \
 #              jekyll-adoc $CMND
-MAINTAINER Sergio Talens-Oliag <sto@iti.es>
-# update distribution and packages -- use httpredir mirror
+LABEL maintainer="Sergio Talens-Oliag <sto@iti.es>"
+# Update sources.list (use httpredir mirror)
 RUN echo '# See /etc/apt/sources.list.d/' > /etc/apt/sources.list \
   && echo 'deb http://httpredir.debian.org/debian stretch main' \
      > /etc/apt/sources.list.d/debian-stretch.list \
   && echo 'deb http://security.debian.org/ stretch/updates main' \
-     >> /etc/apt/sources.list.d/debian-stretch.list \
-  && apt-get update \
-  && apt-get dist-upgrade -y --no-install-recommends \
-  && apt-get install -y aptitude \
-  && aptitude -y purge ~o \
-  && apt-get purge aptitude -y \
-  && apt-get autoremove --purge -y \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-# Install required packages
+     >> /etc/apt/sources.list.d/debian-stretch.list
+# Install common required packages
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
                      git \
@@ -42,7 +34,6 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 # Install jekyll >= 3.5.0 (we want liquid >= 4.0)
 RUN gem install jekyll --version '>= 3.5.0'
-
 # Default jekyll components (list taken from
 # https://github.com/jekyll/docker/blob/master/opts.yml)
 RUN gem install html-proofer \
@@ -78,7 +69,7 @@ RUN gem install jekyll-admin
 RUN gem install asciidoctor \
                 coderay \
                 jekyll-asciidoc
-# additional packages
+# Additional packages
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
                      graphviz \
@@ -114,13 +105,10 @@ RUN cd /tmp \
     && git clone https://github.com/sto/jekyll-rst.git \
     && cd jekyll-rst && rake install && rake clobber \
     && cd .. && rm -rf jekyll-rst
-
 # Add reveal.js support for asciidoctor
 RUN gem install asciidoctor-revealjs
-
 # Add bespoke support for asciidoctor
 RUN gem install asciidoctor-bespoke --pre
-
 # Install active LTS nodejs version for bespoke processing
 RUN NODEREPO="node_8.x" \
   && apt-get update \
@@ -134,12 +122,22 @@ RUN NODEREPO="node_8.x" \
                      nodejs \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
-
 # Install gulp
 RUN npm install -g gulp
-
+# Update distribution packages (it is done the last step to make sure that it
+# is executed each time the container is built)
+RUN apt-get update \
+  && apt-get dist-upgrade -y --no-install-recommends \
+  && apt-get install -y aptitude \
+  && aptitude -y purge ~o \
+  && apt-get purge aptitude -y \
+  && apt-get autoremove --purge -y \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+# All installed!
 WORKDIR /documents
 VOLUME  /documents
+# Expose jekyll default port
 EXPOSE 4000
-
+# By default we simply run a bash shell
 CMD ["/bin/bash"]
