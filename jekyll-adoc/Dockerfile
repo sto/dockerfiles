@@ -139,7 +139,6 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 # All installed!
 WORKDIR /documents
-VOLUME  /documents
 # Expose jekyll default port
 EXPOSE 4000
 # By default we simply run a bash shell
