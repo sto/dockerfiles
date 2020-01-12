@@ -29,6 +29,7 @@ the container without using passwords.
 # -------
 from __future__ import print_function
 
+import datetime
 import os
 import sys
 import tarfile
@@ -250,6 +251,12 @@ else:
         fdir = "/etc"
         fname = 'passwd'
         fdata = "user:x:{}:{}:Docker user:/user:/bin/bash\n".format(EUID, EGID)
+        append_to_file_in_docker(CONTAINER_ID, fdir, fname, fdata)
+        # shadow file
+        fdir = "/etc"
+        fname = 'shadow'
+        fdata = "user:*:{}:0:99999:7:::\n".format(
+            (datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)).days)
         append_to_file_in_docker(CONTAINER_ID, fdir, fname, fdata)
         # sudoers file
         fdir = "/etc/sudoers.d"

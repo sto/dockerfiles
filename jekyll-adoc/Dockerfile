@@ -1,4 +1,4 @@
-FROM ruby:stretch
+FROM ruby:buster
 #
 # Docker to process jekyll and asciidoctor documents
 #
@@ -16,20 +16,20 @@ FROM ruby:stretch
 #              -v "/etc/passwd:/etc/passwd:ro"         \
 #              -v "/etc/shadow:/etc/shadow:ro"         \
 #              jekyll-adoc $CMND
-LABEL maintainer="Sergio Talens-Oliag <sto@iti.es>"
+LABEL maintainer="Sergio Talens-Oliag <sto@mixinet.net>"
 # Update sources.list (use httpredir mirror)
 RUN echo '# See /etc/apt/sources.list.d/' > /etc/apt/sources.list \
-  && echo 'deb http://httpredir.debian.org/debian stretch main' \
-     > /etc/apt/sources.list.d/debian-stretch.list \
-  && echo 'deb http://security.debian.org/ stretch/updates main' \
-     >> /etc/apt/sources.list.d/debian-stretch.list
+  && echo 'deb http://httpredir.debian.org/debian buster main' \
+     > /etc/apt/sources.list.d/debian-buster.list \
+  && echo 'deb http://security.debian.org/ buster/updates main' \
+     >> /etc/apt/sources.list.d/debian-buster.list
 # Install common required packages
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
                      git \
                      sudo \
-                     python-docutils \
-                     python-pygments \
+                     python3-docutils \
+                     python3-pygments \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Install jekyll >= 3.5.0 (we want liquid >= 4.0)
@@ -71,12 +71,12 @@ RUN gem install asciidoctor \
                 coderay \
                 jekyll-asciidoc
 # Additional packages
+# FIXME: The 'umlet' package is missing from buster, so we leave it out for now
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
                      graphviz \
                      fonts-liberation \
                      linkchecker \
-                     umlet \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 # Add diagram support to jekyll and asciidoctor
@@ -86,11 +86,10 @@ RUN gem install asciidoctor-diagram \
 # install using other tools 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends  \
-                     python-pip \
-                     python-pip-whl \
-                     python-setuptools \
-                     python-wheel \
-  && pip install --system \
+                     python3-pip \
+                     python3-setuptools \
+                     python3-wheel \
+  && pip3 install --system \
                  blockdiag \
                  seqdiag \
                  actdiag \
@@ -113,10 +112,10 @@ RUN gem install concurrent-ruby
 # Add bespoke support for asciidoctor
 RUN gem install asciidoctor-bespoke --pre
 # Install active LTS nodejs version for bespoke processing
-RUN NODEREPO="node_8.x" \
+RUN NODEREPO="node_12.x" \
   && apt-get update \
   && apt-get install -y --no-install-recommends apt-transport-https \
-  && echo "deb https://deb.nodesource.com/${NODEREPO} stretch main" \
+  && echo "deb https://deb.nodesource.com/${NODEREPO} buster main" \
      > /etc/apt/sources.list.d/nodesource.list \
   && curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key \
      | apt-key add - \
@@ -139,7 +138,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 # All installed!
 WORKDIR /documents
-# Expose jekyll default port
-EXPOSE 4000
-# By default we simply run a bash shell
-CMD ["/bin/bash"]
+## Expose jekyll default port
+#EXPOSE 4000
+# By default we simply run a default shell
+CMD ["/bin/sh"]
