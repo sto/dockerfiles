@@ -111,8 +111,9 @@ RUN gem install asciidoctor-revealjs
 RUN gem install concurrent-ruby
 # Add bespoke support for asciidoctor
 RUN gem install asciidoctor-bespoke --pre
-# Install active LTS nodejs version for bespoke processing
-RUN NODEREPO="node_12.x" \
+# Install nodejs version for bespoke processing -- we keep in on 11.x for now,
+# as newer versions break gulp < 4 compatibility
+RUN NODEREPO="node_11.x" \
   && apt-get update \
   && apt-get install -y --no-install-recommends apt-transport-https \
   && echo "deb https://deb.nodesource.com/${NODEREPO} buster main" \
