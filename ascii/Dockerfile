@@ -4,20 +4,20 @@ RUN apt-get update \
              boxes \
              cmatrix \
              cowsay \
-			 curl \
+             curl \
              figlet \
              fortune fortunes \
              libaa-bin \
-			 libcurses-perl \
-			 make \
-			 perl \
-			 python3 \
-			 sl \
-			 toilet \
-			 unzip \
+             libcurses-perl \
+             make \
+             perl \
+             python3 \
+             sl \
+             toilet \
+             unzip \
   && curl -L -s -k \
      https://github.com/nitram509/ascii-telnet-server/archive/master.zip \
-	 > /tmp/ascii-telnet-server-master.zip \
+     > /tmp/ascii-telnet-server-master.zip \
   && cd /opt \
   && unzip /tmp/ascii-telnet-server-master.zip \
   && rm -f /tmp/ascii-telnet-server-master.zip \
